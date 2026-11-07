@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="24dp"
+    tools:context=".MainActivity">
+
+    <Button
+        android:id="@+id/password_authentication_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="비밀번호 인증" />
+
+    <Button
+        android:id="@+id/google_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="구글 로그인" />
+
+    <Button
+        android:id="@+id/storage_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Cloud Storage" />
+
+    <Button
+        android:id="@+id/cloud_firestore_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Cloud Firestore" />
+
+</LinearLayout>

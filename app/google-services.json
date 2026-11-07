@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "178902205715",
+    "project_id": "spotmate-e6030",
+    "storage_bucket": "spotmate-e6030.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:178902205715:android:5a47c1a3c63d9916a446e6",
+        "android_client_info": {
+          "package_name": "com.example.spotmate"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCQzXuVkM14HgHv9z7rJD2cBgDHl2_zxnk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
