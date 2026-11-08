@@ -413,19 +413,3 @@ fun MyPageScreenPreview() {
         }
     }
 }
-@Composable
-private fun StatusBadge(
-    modifier: Modifier = Modifier
-) {
-    Box(
-        modifier = modifier
-            .background(
-                Color(0xFFF6C90E),
-                RoundedCornerShape(11.dp)
-            )
-            .padding(
-                horizontal = 10.dp,
-                vertical = 5.dp
-            )
-    )
-}
