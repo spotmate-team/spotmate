@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -73,12 +74,14 @@
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
-                    <ImageView
+                    <com.google.android.material.imageview.ShapeableImageView
                         android:id="@+id/iv_profile"
                         android:layout_width="76dp"
                         android:layout_height="76dp"
                         android:background="@drawable/bg_profile_circle"
-                        android:contentDescription="프로필 이미지"/>
+                        android:contentDescription="프로필 이미지"
+                        android:scaleType="centerCrop"
+                        app:shapeAppearanceOverlay="@style/CircleImage" />
 
                     <LinearLayout
                         android:layout_width="0dp"
