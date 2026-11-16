@@ -35,7 +35,8 @@ fun MyPageScreen(
         modifier = modifier
             .fillMaxSize()
             .background(MapBg)
-    ) {
+    )
+    {
 
         Column(
             modifier = Modifier

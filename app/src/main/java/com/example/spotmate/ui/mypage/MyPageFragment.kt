@@ -16,6 +16,8 @@ import com.example.spotmate.R
 import android.widget.ImageView
 import androidx.activity.result.contract.ActivityResultContracts
 import android.net.Uri
+import android.content.Context
+import java.io.File
 
 class MyPageFragment : Fragment() {
 
@@ -43,6 +45,36 @@ class MyPageFragment : Fragment() {
             false
         )
 
+        // 저장된 프로필 정보 불러오기
+        val prefs = requireContext().getSharedPreferences(
+            "spotmate_profile",
+            Context.MODE_PRIVATE
+        )
+
+        // 닉네임과 자기소개 불러오기
+        val savedNickname = prefs.getString("nickname", null)
+        val savedIntroduction = prefs.getString("introduction", null)
+
+        if (savedNickname != null) {
+            view.findViewById<TextView>(R.id.tv_nickname).text = savedNickname
+        }
+
+        if (savedIntroduction != null) {
+            view.findViewById<TextView>(R.id.tv_introduction).text = savedIntroduction
+        }
+
+        // 저장된 프로필 사진 불러오기
+        val savedImagePath = prefs.getString("profile_image_path", null)
+
+        if (savedImagePath != null) {
+            val imageFile = File(savedImagePath)
+
+            if (imageFile.exists()) {
+                view.findViewById<ImageView>(R.id.iv_profile)
+                    .setImageURI(Uri.fromFile(imageFile))
+            }
+        }
+
         // 프로필 수정 버튼
         val editButton = view.findViewById<View>(R.id.btn_edit_profile)
 
@@ -57,6 +89,7 @@ class MyPageFragment : Fragment() {
     private fun showEditProfileDialog(mainView: View) {
 
         val dialog = Dialog(requireContext())
+        selectedProfileImageUri = null
 
         val dialogView = layoutInflater.inflate(
             R.layout.edit_profile,
@@ -68,6 +101,22 @@ class MyPageFragment : Fragment() {
         // 팝업의 프로필 이미지 연결
         editProfileImageView =
             dialogView.findViewById(R.id.edit_profile_image)
+
+        // 이전에 저장한 프로필 사진 불러오기
+        val prefs = requireContext().getSharedPreferences(
+            "spotmate_profile",
+            Context.MODE_PRIVATE
+        )
+
+        val savedImagePath = prefs.getString("profile_image_path", null)
+
+        if (savedImagePath != null) {
+            val imageFile = File(savedImagePath)
+
+            if (imageFile.exists()) {
+                editProfileImageView?.setImageURI(Uri.fromFile(imageFile))
+            }
+        }
 
         // 사진 변경 버튼
         val changePhotoButton =
@@ -115,9 +164,6 @@ class MyPageFragment : Fragment() {
 
         cancelButton.setOnClickListener {
             dialog.dismiss()
-
-
-
         }
 
         // 저장 버튼
@@ -127,19 +173,51 @@ class MyPageFragment : Fragment() {
         saveButton.setOnClickListener {
 
             // 수정한 닉네임과 자기소개 가져오기
-            val newNickname =
-                dialogView.findViewById<EditText>(R.id.edit_nickname).text.toString()
+            val newNickname = nicknameInput.text.toString()
 
-            val newIntroduction =
-                dialogView.findViewById<EditText>(R.id.edit_introduction).text.toString()
+            val newIntroduction = introductionInput.text.toString()
 
-            // 마이페이지 화면의 텍스트 변경
+            // 마이페이지 화면에 반영
             mainView.findViewById<TextView>(R.id.tv_nickname).text = newNickname
             mainView.findViewById<TextView>(R.id.tv_introduction).text = newIntroduction
 
-            // 선택한 사진이 있다면 마이페이지 사진 변경
-            selectedProfileImageUri?.let {
-                mainView.findViewById<ImageView>(R.id.iv_profile).setImageURI(it)
+            // 닉네임과 자기소개 저장
+            val prefs = requireContext().getSharedPreferences(
+                "spotmate_profile",
+                Context.MODE_PRIVATE
+            )
+
+            prefs.edit()
+                .putString("nickname", newNickname)
+                .putString("introduction", newIntroduction)
+                .apply()
+
+            // 선택한 사진이 있다면 내부 저장소에 복사
+            selectedProfileImageUri?.let { uri ->
+
+                val imageFile = File(
+                    requireContext().filesDir,
+                    "profile_image.jpg"
+                )
+
+                val inputStream =
+                    requireContext().contentResolver.openInputStream(uri)
+
+                inputStream?.use { input ->
+                    imageFile.outputStream().use { output ->
+                        input.copyTo(output)
+                    }
+                }
+
+                //사진 경로 저장
+                if (imageFile.exists()) {
+                    prefs.edit()
+                        .putString("profile_image_path", imageFile.absolutePath)
+                        .apply()
+
+                    mainView.findViewById<ImageView>(R.id.iv_profile)
+                        .setImageURI(Uri.fromFile(imageFile))
+                }
             }
 
             // 팝업 닫기

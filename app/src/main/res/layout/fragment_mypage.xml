@@ -229,14 +229,15 @@
             android:gravity="center"
             android:orientation="vertical">
 
-            <TextView
+            <ImageView
                 android:layout_width="56dp"
                 android:layout_height="32dp"
                 android:gravity="center"
-                android:text="◎"
-                android:textSize="22sp"
-                android:textColor="#456A0B"
-                android:background="@drawable/bg_tab_selected"/>
+                android:padding="6dp"
+                android:src="@drawable/ic_tab_social"
+                android:scaleType="fitCenter"
+                android:background="@drawable/bg_tab_selected"
+                android:contentDescription="소셜"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -254,13 +255,14 @@
             android:gravity="center"
             android:orientation="vertical">
 
-            <TextView
+            <ImageView
                 android:layout_width="56dp"
                 android:layout_height="32dp"
                 android:gravity="center"
-                android:text="⌂"
-                android:textSize="22sp"
-                android:textColor="#456A0B"/>
+                android:padding="6dp"
+                android:src="@drawable/ic_tab_home"
+                android:scaleType="fitCenter"
+                android:contentDescription="홈"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -277,13 +279,14 @@
             android:gravity="center"
             android:orientation="vertical">
 
-            <TextView
+            <ImageView
                 android:layout_width="56dp"
                 android:layout_height="32dp"
                 android:gravity="center"
-                android:text="+"
-                android:textSize="22sp"
-                android:textColor="#456A0B"/>
+                android:padding="6dp"
+                android:src="@drawable/ic_tab_add"
+                android:scaleType="fitCenter"
+                android:contentDescription="추가"/>
 
             <TextView
                 android:layout_width="wrap_content"
