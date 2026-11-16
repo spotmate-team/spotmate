@@ -1,10 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CloudFirestoreActivity">
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context=".login.CloudFirestoreActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <EditText
+        android:id="@+id/edit_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="저장할 내용" />
+
+    <Button
+        android:id="@+id/save_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Firestore에 저장" />
+
+    <Button
+        android:id="@+id/load_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Firestore에서 불러오기" />
+
+    <TextView
+        android:id="@+id/result_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="" />
+
+</LinearLayout>
