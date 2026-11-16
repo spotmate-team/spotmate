@@ -33,4 +33,10 @@
         android:layout_height="wrap_content"
         android:text="Cloud Firestore" />
 
+    <Button
+        android:id="@+id/sign_out_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="로그아웃" />
+
 </LinearLayout>

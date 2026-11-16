@@ -1,47 +1,62 @@
 package com.example.spotmate
 
+import android.content.Intent
 import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.spotmate.ui.theme.SpotMateTheme
+import android.view.View
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.graphics.Insets
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import com.example.spotmate.login.CloudFirestoreActivity
+import com.example.spotmate.login.CloudStorageActivity
+import com.example.spotmate.login.GoogleSignInActivity
+import com.example.spotmate.login.PWAuthActivity
+import com.google.firebase.auth.FirebaseAuth
 
-class MainActivity : ComponentActivity() {
+class MainActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContent {
-            SpotMateTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
-            }
+
+        // Auto login: Firebase keeps the session, so a non-null user means we are still signed in.
+        if (FirebaseAuth.getInstance().currentUser == null) {
+            startActivity(Intent(this, PWAuthActivity::class.java))
+            finish()
+            return
         }
-    }
-}
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
+        WindowCompat.enableEdgeToEdge(window)
+        setContentView(R.layout.activity_main)
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    SpotMateTheme {
-        Greeting("Android")
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+            val systemBars: Insets = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
+
+        findViewById<View>(R.id.password_authentication_button).setOnClickListener {
+            startActivity(Intent(this@MainActivity, PWAuthActivity::class.java))
+        }
+
+        findViewById<View>(R.id.google_button).setOnClickListener {
+            startActivity(Intent(this@MainActivity, GoogleSignInActivity::class.java))
+        }
+
+        findViewById<View>(R.id.storage_button).setOnClickListener {
+            startActivity(Intent(this@MainActivity, CloudStorageActivity::class.java))
+        }
+
+        findViewById<View>(R.id.cloud_firestore_button).setOnClickListener {
+            startActivity(Intent(this@MainActivity, CloudFirestoreActivity::class.java))
+        }
+
+        findViewById<View>(R.id.sign_out_button).setOnClickListener {
+            FirebaseAuth.getInstance().signOut()
+            startActivity(
+                Intent(this@MainActivity, PWAuthActivity::class.java)
+                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            )
+        }
     }
 }

@@ -1,3 +1,24 @@
 <resources>
     <string name="app_name">SpotMate</string>
+
+    <!-- Login -->
+    <string name="login_wordmark">spotmate</string>
+    <string name="login_tagline">지도 위에서 반짝이는 우리의 일상</string>
+    <string name="login_id_label">아이디</string>
+    <string name="login_id_hint">이메일 주소</string>
+    <string name="login_password_label">비밀번호</string>
+    <string name="login_password_hint">비밀번호</string>
+    <string name="login_button">로그인</string>
+    <string name="login_google_button">Google 계정으로 계속하기</string>
+    <string name="login_first_time">처음이에요?</string>
+    <string name="login_signup">회원가입</string>
+
+    <!-- Sign up -->
+    <string name="signup_nickname_label">닉네임</string>
+    <string name="signup_nickname_hint">닉네임을 입력하세요</string>
+    <string name="signup_email_label">이메일</string>
+    <string name="signup_password_hint">6자 이상 입력해주세요</string>
+    <string name="signup_password_confirm_label">비밀번호 확인</string>
+    <string name="signup_password_confirm_hint">비밀번호를 한 번 더 입력하세요</string>
+    <string name="signup_have_account">이미 계정이 있나요?</string>
 </resources>

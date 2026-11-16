@@ -7,4 +7,13 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- SpotMate design tokens (Figma: SpotMate UI) -->
+    <color name="cream">#FFFBFCF5</color>
+    <color name="olive">#FF456A0B</color>
+    <color name="yellow">#FFF6C90E</color>
+    <color name="lime_light">#FFDDE8BC</color>
+    <color name="ink">#FF1B2410</color>
+    <color name="ink_sub">#FF5A6648</color>
+    <color name="border">#FFC9D3AE</color>
 </resources>
