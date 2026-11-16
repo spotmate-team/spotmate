@@ -1,4 +1,4 @@
-package com.example.spotmate;
+package com.example.spotmate.login;
 
 import android.os.Bundle;
 
@@ -8,13 +8,15 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-public class CloudStorageActivity extends AppCompatActivity {
+import com.example.spotmate.R;
+
+public class SignOutActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         WindowCompat.enableEdgeToEdge(getWindow());
-        setContentView(R.layout.activity_cloude_storage);
+        setContentView(R.layout.activity_sign_out);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);

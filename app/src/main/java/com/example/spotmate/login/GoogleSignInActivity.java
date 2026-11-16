@@ -1,4 +1,4 @@
-package com.example.spotmate;
+package com.example.spotmate.login;
 
 import android.os.Bundle;
 
@@ -7,6 +7,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import com.example.spotmate.R;
 
 public class GoogleSignInActivity extends AppCompatActivity {
 
