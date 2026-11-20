@@ -128,7 +128,7 @@ fun dummySpot(
 @Composable
 fun SpotDetailScreen(
     spot: SpotDetail = dummySpot(),
-    myUid: String = "uid_me", // TODO 로그인 붙으면 uid로
+    myUid: String? = "uid_me", // TODO 로그인 붙으면 FirebaseAuth uid로 (로그아웃이면 null)
     myLat: Double = DUMMY_MY_LAT,
     myLng: Double = DUMMY_MY_LNG,
     repository: ReactionRepository = remember { FakeReactionRepository() },
@@ -146,7 +146,7 @@ fun SpotDetailScreen(
 
     val remainingMillis = (spot.expiresAtMillis - now).coerceAtLeast(0)
     val isExpired = remainingMillis == 0L
-    val isMine = spot.authorUid == myUid
+    val isMine = myUid != null && spot.authorUid == myUid
     val distance = distanceMeters(myLat, myLng, spot.latitude, spot.longitude)
 
     var myReactions by remember { mutableStateOf(repository.myReactions(spot.spotId, myUid)) }
@@ -163,6 +163,7 @@ fun SpotDetailScreen(
             ToggleResult.REMOVED -> "${type.label} 반응을 취소했어요"
             ToggleResult.EXPIRED -> "만료된 스팟에는 반응할 수 없어요"
             ToggleResult.MY_SPOT -> "내 스팟에는 반응할 수 없어요"
+            ToggleResult.NOT_LOGGED_IN -> "로그인 후 반응할 수 있어요"
         }
         when (result) {
             ToggleResult.ADDED -> onReactionChanged(type, true)
