@@ -20,8 +20,15 @@ class ReactionRepositoryTest {
         repo = FakeReactionRepository()
     }
 
-    private fun toggle(type: ReactionType, time: Long = now) =
-        repo.toggle(spotId, me, author, type, expiresAt, time)
+    private fun toggle(
+        type: ReactionType,
+        time: Long = now,
+        from: String? = me,
+        to: String = author,
+        spot: String = spotId,
+    ) = repo.toggle(spot, from, to, type, expiresAt, time)
+
+    // ---- #1 중복 / 취소 ----
 
     // 처음 누르면 저장
     @Test
@@ -70,5 +77,57 @@ class ReactionRepositoryTest {
 
         assertEquals(ToggleResult.EXPIRED, result)
         assertTrue(repo.myReactions(spotId, me).isEmpty())
+    }
+
+    // ---- #2 대상 사용자 식별 ----
+
+    // 보낸 사람, 받는 사람 저장
+    @Test
+    fun reaction_savesSenderAndReceiver() {
+        toggle(ReactionType.GO)
+
+        val saved = repo.receivedReactions(author).first()
+        assertEquals(me, saved.fromUid)
+        assertEquals(author, saved.toUid)
+    }
+
+    // 내 스팟에는 반응 불가
+    @Test
+    fun mySpot_cannotReact() {
+        val result = toggle(ReactionType.GO, from = author)
+
+        assertEquals(ToggleResult.MY_SPOT, result)
+        assertTrue(repo.receivedReactions(author).isEmpty())
+    }
+
+    // 로그인 안 하면 반응 불가
+    @Test
+    fun notLoggedIn_cannotReact() {
+        val result = toggle(ReactionType.GO, from = null)
+
+        assertEquals(ToggleResult.NOT_LOGGED_IN, result)
+        assertTrue(repo.receivedReactions(author).isEmpty())
+    }
+
+    // 받은 반응은 작성자별로 조회
+    @Test
+    fun receivedReactions_areFilteredByReceiver() {
+        toggle(ReactionType.GO)                                       // 나 → seeun
+        toggle(ReactionType.POKE, from = "uid_friend")                // 친구 → seeun
+        toggle(ReactionType.GO, to = "uid_other", spot = "spot_2")    // 나 → 다른 사람
+
+        assertEquals(2, repo.receivedReactions(author).size)
+        assertEquals(1, repo.receivedReactions("uid_other").size)
+    }
+
+    // 받은 반응은 최신순
+    @Test
+    fun receivedReactions_areSortedByLatest() {
+        toggle(ReactionType.GO, time = now)
+        toggle(ReactionType.POKE, time = now + 1_000, from = "uid_friend")
+
+        val list = repo.receivedReactions(author)
+        assertEquals(ReactionType.POKE, list[0].type)
+        assertEquals(ReactionType.GO, list[1].type)
     }
 }
