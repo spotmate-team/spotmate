@@ -23,22 +23,25 @@ class ReactionRepositoryTest {
     private fun toggle(type: ReactionType, time: Long = now) =
         repo.toggle(spotId, me, author, type, expiresAt, time)
 
+    // 처음 누르면 저장
     @Test
-    fun 처음_누르면_저장된다() {
+    fun firstClick_addsReaction() {
         assertEquals(ToggleResult.ADDED, toggle(ReactionType.GO))
         assertEquals(setOf(ReactionType.GO), repo.myReactions(spotId, me))
     }
 
+    // 다시 누르면 취소
     @Test
-    fun 같은_반응을_다시_누르면_취소된다() {
+    fun secondClick_removesReaction() {
         toggle(ReactionType.GO)
 
         assertEquals(ToggleResult.REMOVED, toggle(ReactionType.GO))
         assertTrue(repo.myReactions(spotId, me).isEmpty())
     }
 
+    // 같은 반응은 하나만
     @Test
-    fun 같은_반응은_중복_저장되지_않는다() {
+    fun sameReaction_isNotDuplicated() {
         toggle(ReactionType.POKE)
         toggle(ReactionType.POKE)
         toggle(ReactionType.POKE)
@@ -47,8 +50,9 @@ class ReactionRepositoryTest {
         assertEquals(1, repo.receivedReactions(author).size)
     }
 
+    // 종류가 다르면 각각 저장
     @Test
-    fun 종류가_다르면_각각_저장된다() {
+    fun differentReactions_areSavedSeparately() {
         toggle(ReactionType.GO)
         toggle(ReactionType.POKE)
         toggle(ReactionType.CURIOUS)
@@ -59,8 +63,9 @@ class ReactionRepositoryTest {
         )
     }
 
+    // 만료된 스팟은 저장 안 됨
     @Test
-    fun 만료된_스팟에는_저장되지_않는다() {
+    fun expiredSpot_isNotSaved() {
         val result = toggle(ReactionType.GO, time = expiresAt + 1)
 
         assertEquals(ToggleResult.EXPIRED, result)
