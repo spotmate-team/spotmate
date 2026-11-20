@@ -156,10 +156,19 @@ fun SpotDetailScreen(
     var sheetDragY by remember { mutableFloatStateOf(0f) }
 
     fun toggle(type: ReactionType) {
-        val nowSelected = repository.toggle(spot.spotId, myUid, spot.authorUid, type)
+        val result = repository.toggle(spot.spotId, myUid, spot.authorUid, type, spot.expiresAtMillis)
         myReactions = repository.myReactions(spot.spotId, myUid)
-        toastMessage = if (nowSelected) "${spot.authorName}${type.sentMessage}" else "${type.label} 반응을 취소했어요"
-        onReactionChanged(type, nowSelected)
+        toastMessage = when (result) {
+            ToggleResult.ADDED -> "${spot.authorName}${type.sentMessage}"
+            ToggleResult.REMOVED -> "${type.label} 반응을 취소했어요"
+            ToggleResult.EXPIRED -> "만료된 스팟에는 반응할 수 없어요"
+            ToggleResult.MY_SPOT -> "내 스팟에는 반응할 수 없어요"
+        }
+        when (result) {
+            ToggleResult.ADDED -> onReactionChanged(type, true)
+            ToggleResult.REMOVED -> onReactionChanged(type, false)
+            else -> {}
+        }
     }
 
     LaunchedEffect(toastMessage) {
